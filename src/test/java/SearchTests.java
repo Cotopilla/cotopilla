@@ -5,6 +5,12 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class SearchTests {
+    //тестируем git push
+    @Test
+    void newTest() {
+        System.out.println("Hi");
+    }
+
     @Test
     void successfulGoogleSearchTest() {
         open("https://www.google.com/");
@@ -39,4 +45,5 @@ public class SearchTests {
         $("#searchbox_input").setValue("selenide").pressEnter();
         $(".react-results--main").shouldHave(text("https://selenide.org"));
     }
+
 }

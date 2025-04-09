@@ -8,7 +8,7 @@ public class SearchTests {
     //тестируем git push
     @Test
     void newTest() {
-        System.out.println("Hi");
+        System.out.println("Not hello! Just Hi!");
     }
 
     @Test

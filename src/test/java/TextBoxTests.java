@@ -1,6 +1,7 @@
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -12,19 +13,19 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TextBoxTests {
-    private static String pathName = "C:\\Users\\yevgeniya.malysheva\\Downloads\\";
-    private static String fileName = "category_flowers.jpg";
-    private static String firstName = "Evgeniya";
-    private static String lastName = "Malysheva";
-    private static String email = "cotopilla@yandex.ru";
-    private static String gender = "Female";
-    private static String phoneNumber = "9209209209";
-    private static String dateOfBirthSent = "31 Jan 2013";
-    private static String dateOfBirthReceived = "31 January,2013";
-    private static String subjectName = "Maths";
-    private static String hobbyName = "Sports, Reading";
-    private static String address = "Blabla Street";
-    private static String stateAndCity = "Uttar Pradesh Lucknow";
+    private String pathName = "C:\\Users\\yevgeniya.malysheva\\Downloads\\";
+    private String fileName = "category_flowers.jpg";
+    private String firstName = "Evgeniya";
+    private String lastName = "Malysheva";
+    private String email = "cotopilla@yandex.ru";
+    private String gender = "Female";
+    private String phoneNumber = "9209209209";
+    private String dateOfBirthSent = "31 Jan 2013";
+    private String dateOfBirthReceived = "31 January,2013";
+    private String subjectName = "Maths";
+    private String hobbyName = "Sports, Reading";
+    private String address = "Blabla Street";
+    private String stateAndCity = "Uttar Pradesh Lucknow";
 
     @BeforeAll
     static void beforeAll() {
@@ -32,6 +33,11 @@ public class TextBoxTests {
         Configuration.browserSize = "1920x1080";
         Configuration.pageLoadStrategy = "eager";
             }
+
+    @AfterEach
+    void tearDown() {
+        closeWebDriver();
+    }
 
     @Test
     void fillAllForm() {
@@ -75,6 +81,7 @@ public class TextBoxTests {
         $("#closeLargeModal").sendKeys(Keys.END);
         $("#closeLargeModal").click();
 
-        closeWebDriver();
+
+
     }
 }

@@ -1,18 +1,11 @@
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
-import java.io.File;
-
-import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TextBoxTests {
@@ -22,10 +15,11 @@ public class TextBoxTests {
     private String email = "cotopilla@yandex.ru";
     private String gender = "Female";
     private String phoneNumber = "9209209209";
+//    private String dateOfBirthSent = "30 Aug 1987";
     private String monthOfBirthSent = "August";
     private String yearOfBirthSent = "1987";
-    private String dayOfBirthSent = "15";
-    private String dateOfBirthReceived = "15 August,1987";
+    private String dayOfBirthSent = "30";
+    private String dateOfBirthReceived = "30 August,1987";
     private String subjectName = "Maths";
     private String hobbyName = "Sports";
     private String address = "Blabla Street";
@@ -66,11 +60,8 @@ public class TextBoxTests {
         $(".react-datepicker-wrapper").click();
         $(".react-datepicker__month-select").selectOption(monthOfBirthSent);
         $(".react-datepicker__year-select").selectOption(yearOfBirthSent);
-        //!!Надо как-то исключать класс react-datepicker__day--outside-month,
-        // иначе при значении dayOfBirthSent=30, например,
-        // будет проставлена дата 30 июля; вместо 30 августа.
-        //".react-datepicker__day:not(react-datepicker__day--outside-month)" - не работает
-        $$(".react-datepicker__day").findBy(text(dayOfBirthSent)).click();
+        //отсекаем даты предыдущего месяца
+        $$(".react-datepicker__day:not(.react-datepicker__day--outside-month)").findBy(text(dayOfBirthSent)).click();
 
         $("#subjectsInput").sendKeys(subjectName);
         $("#subjectsInput").pressEnter();
@@ -82,7 +73,6 @@ public class TextBoxTests {
         $("#stateCity-wrapper").$(byText(stateName)).click();
         $("#city").click();
         $("#stateCity-wrapper").$(byText(cityName)).click();
-        sleep(10000);
         $("#submit").click();
 
         $(".table-responsive").shouldHave(text(firstName + " " + lastName));
@@ -96,7 +86,6 @@ public class TextBoxTests {
         $(".table-responsive").shouldHave(text(address));
         $(".table-responsive").shouldHave(text(stateName + " " + cityName));
 
-        sleep(6000);
         $("#closeLargeModal").sendKeys(Keys.END);
         $("#closeLargeModal").click();
     }

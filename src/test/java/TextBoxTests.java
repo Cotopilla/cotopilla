@@ -1,6 +1,7 @@
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,30 +10,34 @@ import org.openqa.selenium.Keys;
 import java.io.File;
 
 import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TextBoxTests {
-    private String pathName = "C:\\Users\\yevgeniya.malysheva\\Downloads\\";
     private String fileName = "category_flowers.jpg";
     private String firstName = "Evgeniya";
     private String lastName = "Malysheva";
     private String email = "cotopilla@yandex.ru";
     private String gender = "Female";
     private String phoneNumber = "9209209209";
-    private String dateOfBirthSent = "31 Jan 2013";
-    private String dateOfBirthReceived = "31 January,2013";
+    private String monthOfBirthSent = "August";
+    private String yearOfBirthSent = "1987";
+    private String dayOfBirthSent = "15";
+    private String dateOfBirthReceived = "15 August,1987";
     private String subjectName = "Maths";
-    private String hobbyName = "Sports, Reading";
+    private String hobbyName = "Sports";
     private String address = "Blabla Street";
-    private String stateAndCity = "Uttar Pradesh Lucknow";
+    private String stateName = "Uttar Pradesh";
+    private String cityName = "Lucknow";
 
     @BeforeAll
     static void beforeAll() {
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browserSize = "1920x1080";
         Configuration.pageLoadStrategy = "eager";
-            }
+    }
 
     @AfterEach
     void tearDown() {
@@ -41,47 +46,58 @@ public class TextBoxTests {
 
     @Test
     void fillAllForm() {
-        File fileUpload = new File(pathName+fileName);
         open("/automation-practice-form");
+        executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры, чтобы не возникла
+        executeJavaScript("$('footer').remove()");      //ошибка element click intercepted
 
         $("#firstName").setValue(firstName);
         $("#lastName").setValue(lastName);
         $("#userEmail").setValue(email);
-        $("[for='gender-radio-2']").shouldBe(Condition.visible).click();
-        $("#dateOfBirthInput").click();
-        $("#dateOfBirthInput").sendKeys(Keys.CONTROL + "a");
-        $("#dateOfBirthInput").sendKeys(dateOfBirthSent);
-        $("#dateOfBirth-label").click();
+        $("#genterWrapper").find(byText(gender)).click();
         $("#userNumber").setValue(phoneNumber);
+
+//     Установка даты рождения (вариант №1)
+//        $("#dateOfBirthInput").click();
+//        $("#dateOfBirthInput").sendKeys(Keys.CONTROL + "a");
+//        $("#dateOfBirthInput").sendKeys(dateOfBirthSent);
+//        $("#dateOfBirth-label").click();
+
+//     Установка даты рождения (вариант №2)
+        $(".react-datepicker-wrapper").click();
+        $(".react-datepicker__month-select").selectOption(monthOfBirthSent);
+        $(".react-datepicker__year-select").selectOption(yearOfBirthSent);
+        //!!Надо как-то исключать класс react-datepicker__day--outside-month,
+        // иначе при значении dayOfBirthSent=30, например,
+        // будет проставлена дата 30 июля; вместо 30 августа.
+        //".react-datepicker__day:not(react-datepicker__day--outside-month)" - не работает
+        $$(".react-datepicker__day").findBy(text(dayOfBirthSent)).click();
+
         $("#subjectsInput").sendKeys(subjectName);
         $("#subjectsInput").pressEnter();
-        $("[for=hobbies-checkbox-1]").scrollTo();
-        $("[for=hobbies-checkbox-1]").shouldBe(Condition.visible).click();
-        $("[for=hobbies-checkbox-2]").shouldBe(Condition.visible).click();
-        $("#uploadPicture").uploadFile(fileUpload);
+        $("#hobbiesWrapper").scrollTo();
+        $("#hobbiesWrapper").find(byText(hobbyName)).click(); //find=$, findAll=$$
+        $("#uploadPicture").uploadFromClasspath(fileName);
         $("#currentAddress").setValue(address);
         $("#state").click();
-        $("#react-select-3-option-1").shouldBe(Condition.visible).click();
+        $("#stateCity-wrapper").$(byText(stateName)).click();
         $("#city").click();
-        $("#react-select-4-option-1").shouldBe(Condition.visible).click();
+        $("#stateCity-wrapper").$(byText(cityName)).click();
+        sleep(10000);
         $("#submit").click();
 
-        Selenide.switchTo().activeElement();
-        $(byText(firstName+" "+lastName)).should(exist);
-        $(byText(email)).should(exist);
-        $(byText(gender)).should(exist);
-        $(byText(phoneNumber)).should(exist);
-        $(byText(dateOfBirthReceived)).should(exist);
-        $(byText(subjectName)).should(exist);
-        $(byText(hobbyName)).should(exist);
-        $(byText(fileName)).should(exist);
-        $(byText(address)).should(exist);
-        $(byText(stateAndCity)).should(exist);
+        $(".table-responsive").shouldHave(text(firstName + " " + lastName));
+        $(".table-responsive").shouldHave(text(email));
+        $(".table-responsive").shouldHave(text(gender));
+        $(".table-responsive").shouldHave(text(phoneNumber));
+        $(".table-responsive").shouldHave(text(dateOfBirthReceived));
+        $(".table-responsive").shouldHave(text(subjectName));
+        $(".table-responsive").shouldHave(text(hobbyName));
+        $(".table-responsive").shouldHave(text(fileName));
+        $(".table-responsive").shouldHave(text(address));
+        $(".table-responsive").shouldHave(text(stateName + " " + cityName));
 
+        sleep(6000);
         $("#closeLargeModal").sendKeys(Keys.END);
         $("#closeLargeModal").click();
-
-
-
     }
 }

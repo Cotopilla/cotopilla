@@ -210,5 +210,7 @@ public class Snippets {
         executeJavaScript("alert(arguments[0]+arguments[1])", "abc", 12);
         long fortytwo = executeJavaScript("return arguments[0]*arguments[1];", 6, 7);
 
+        executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры на странице https://demoqa.com/automation-practice-form ,
+        executeJavaScript("$('footer').remove()");      //чтобы не возникла ошибка element click intercepted
     }
 }

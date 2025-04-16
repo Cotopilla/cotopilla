@@ -1,5 +1,6 @@
 package github;
 
+import com.codeborne.selenide.HoverOptions;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.CollectionCondition.itemWithText;
@@ -35,7 +36,7 @@ public class GithubSelenideTest {
     }
 
     @Test
-    void findJUnit5CodeForSoftAssertionsInWiki() {
+    void findJUnit5CodeForSoftAssertionsInWikiTest() {
         //Откройте страницу Selenide в Github
         open("https://github.com/selenide/selenide");
 
@@ -63,6 +64,21 @@ public class GithubSelenideTest {
                                 "                $(\"#second\").should(visible).click();\n" +
                                 "            }\n" +
                                 "        }"));
+
+    }
+
+    @Test
+    void hoverTest() {
+        //На главной странице GitHub выберите: Меню -> Solutions -> Enterprize
+        // (с помощью команды hover для Solutions)
+        open("https://github.com/");
+        $(".HeaderMenu-nav").$(byText("Solutions")).hover();
+        $("a[href='https://github.com/enterprise']").click();
+        // Убедитесь, что загрузилась нужная страница
+        // (например, что заголовок: "The AI-powered developer platform.").
+        $("#hero-section-brand-heading").shouldHave(text("The AI-powered\ndeveloper platform"));
+
+
 
     }
 }

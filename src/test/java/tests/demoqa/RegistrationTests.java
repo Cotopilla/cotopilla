@@ -1,21 +1,23 @@
+package tests.demoqa;
+
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class TextBoxTests {
+public class RegistrationTests {
+    private String filePath = "img/";
     private String fileName = "category_flowers.jpg";
     private String firstName = "Evgeniya";
     private String lastName = "Malysheva";
     private String email = "cotopilla@yandex.ru";
     private String gender = "Female";
     private String phoneNumber = "9209209209";
-//    private String dateOfBirthSent = "30 Aug 1987";
     private String monthOfBirthSent = "August";
     private String yearOfBirthSent = "1987";
     private String dayOfBirthSent = "30";
@@ -39,35 +41,27 @@ public class TextBoxTests {
     }
 
     @Test
-    void fillAllForm() {
+    void successfulRegistrationTest() {
         open("/automation-practice-form");
+        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
         executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры, чтобы не возникла
         executeJavaScript("$('footer').remove()");      //ошибка element click intercepted
 
         $("#firstName").setValue(firstName);
         $("#lastName").setValue(lastName);
         $("#userEmail").setValue(email);
-        $("#genterWrapper").find(byText(gender)).click();
+        $("#genterWrapper").$(byText(gender)).click();
         $("#userNumber").setValue(phoneNumber);
-
-//     Установка даты рождения (вариант №1)
-//        $("#dateOfBirthInput").click();
-//        $("#dateOfBirthInput").sendKeys(Keys.CONTROL + "a");
-//        $("#dateOfBirthInput").sendKeys(dateOfBirthSent);
-//        $("#dateOfBirth-label").click();
-
-//     Установка даты рождения (вариант №2)
-        $(".react-datepicker-wrapper").click();
+        $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption(monthOfBirthSent);
         $(".react-datepicker__year-select").selectOption(yearOfBirthSent);
         //отсекаем даты предыдущего месяца
         $$(".react-datepicker__day:not(.react-datepicker__day--outside-month)").findBy(text(dayOfBirthSent)).click();
-
         $("#subjectsInput").sendKeys(subjectName);
         $("#subjectsInput").pressEnter();
         $("#hobbiesWrapper").scrollTo();
-        $("#hobbiesWrapper").find(byText(hobbyName)).click(); //find=$, findAll=$$
-        $("#uploadPicture").uploadFromClasspath(fileName);
+        $("#hobbiesWrapper").$(byText(hobbyName)).click(); //find=$, findAll=$$
+        $("#uploadPicture").uploadFromClasspath(filePath+fileName);
         $("#currentAddress").setValue(address);
         $("#state").click();
         $("#stateCity-wrapper").$(byText(stateName)).click();
@@ -75,18 +69,14 @@ public class TextBoxTests {
         $("#stateCity-wrapper").$(byText(cityName)).click();
         $("#submit").click();
 
-        $(".table-responsive").shouldHave(text(firstName + " " + lastName));
-        $(".table-responsive").shouldHave(text(email));
-        $(".table-responsive").shouldHave(text(gender));
-        $(".table-responsive").shouldHave(text(phoneNumber));
-        $(".table-responsive").shouldHave(text(dateOfBirthReceived));
-        $(".table-responsive").shouldHave(text(subjectName));
-        $(".table-responsive").shouldHave(text(hobbyName));
-        $(".table-responsive").shouldHave(text(fileName));
-        $(".table-responsive").shouldHave(text(address));
-        $(".table-responsive").shouldHave(text(stateName + " " + cityName));
+        $(".modal-dialog").should(appear);
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+        $(".table-responsive").shouldHave(text(firstName + " " + lastName),
+                text(email), text(gender), text(phoneNumber), text(dateOfBirthReceived),
+                text(subjectName), text(hobbyName), text(fileName), text(address),
+                text(stateName + " " + cityName));
 
-        $("#closeLargeModal").sendKeys(Keys.END);
-        $("#closeLargeModal").click();
+//        $("#closeLargeModal").sendKeys(Keys.END);
+//        $("#closeLargeModal").click();
     }
 }

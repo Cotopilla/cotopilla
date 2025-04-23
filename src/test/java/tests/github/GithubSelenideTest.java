@@ -1,4 +1,4 @@
-package github;
+package tests.github;
 
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ public class GithubSelenideTest {
         // открыть главную страницу
         open("https://github.com/");
         // ввести в поле поиска selenide и нажать enter
-        $("[placeholder='Search GitHub']").setValue("selenide").pressEnter();
+        $("[placeholder='Search GitHub']").setValue("tests/selenide").pressEnter();
         // кликнуть на первый репозиторий из списка найденых
         $$("ul.repo-list li").first().$("a").click();
         // проверка: заголовок selenide/selenide

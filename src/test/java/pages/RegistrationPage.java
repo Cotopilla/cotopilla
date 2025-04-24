@@ -101,7 +101,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage uploadPicture(String filePath, String fileName) {
-        uploadPictureButton.uploadFromClasspath(filePath+fileName);
+        uploadPictureButton.uploadFromClasspath(filePath + fileName);
         arrayList.add(fileName);
 
         return this;
@@ -124,12 +124,6 @@ public class RegistrationPage {
         return this;
     }
 
-//    public ModalDialogComponent submitForm() {
-//        submitButton.click();
-//
-//        return modalDialogComponent;
-//    }
-
     public RegistrationPage submitForm() {
         submitButton.click();
         modalDialogComponent.waitingForm();
@@ -138,19 +132,9 @@ public class RegistrationPage {
     }
 
     public RegistrationPage checkResult() {
-        checkResult(arrayList);
+        arrayList.forEach(x -> resultTable.shouldHave(text(x)));
 
         return this;
     }
-
-    public RegistrationPage checkResult(List<String> list) {
-        for(String value: list){
-            resultTable.shouldHave(text(value));
-        }
-
-        return this;
-
-    }
-
 
 }

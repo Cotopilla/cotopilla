@@ -1,15 +1,18 @@
 package pages.components;
 
-import static com.codeborne.selenide.Selenide.$;
+import com.codeborne.selenide.SelenideElement;
 
-import pages.RegistrationPage;
+import static com.codeborne.selenide.Selenide.$;
 
 public class CalendarComponent {
 
+    private SelenideElement monthSelect = $(".react-datepicker__month-select"),
+            yearSelect = $(".react-datepicker__year-select");
+
     public void setDate(String day, String month, String year) {
 
-        $(".react-datepicker__month-select").selectOption(month);
-        $(".react-datepicker__year-select").selectOption(year);
+        monthSelect.selectOption(month);
+        yearSelect.selectOption(year);
         $(".react-datepicker__day--0" + day + ":not(.react-datepicker__day--outside-month)").click();
 
     }

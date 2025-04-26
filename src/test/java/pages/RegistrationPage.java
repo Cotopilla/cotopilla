@@ -13,7 +13,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 public class RegistrationPage {
-    private SelenideElement firstNameInput = $("#firstName"),
+    private final SelenideElement firstNameInput = $("#firstName"),
             lastNameInput = $("#lastName"),
             emailInput = $("#userEmail"),
             genderWrapper = $("#genterWrapper"),
@@ -136,10 +136,8 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage checkResult() {
+    public void checkResult() {
         arrayList.forEach(x -> resultTable.shouldHave(text(x)));
-
-        return this;
     }
 
 //    negative tests methods

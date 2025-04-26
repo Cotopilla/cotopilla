@@ -4,21 +4,21 @@ import org.junit.jupiter.api.Test;
 
 
 public class RegistrationWithPageObjectsTests extends TestBase {
-    private String filePath = "img/";
-    private String fileName = "category_flowers.jpg";
-    private String firstName = "Evgeniya";
-    private String lastName = "Malysheva";
-    private String email = "email@yandex.ru";
-    private String gender = "Female";
-    private String phoneNumber = "1234567890";
-    private String birthDaySent = "30";
-    private String birthMonthSent = "August";
-    private String birthYearSent = "1987";
-    private String subjectName = "Maths";
-    private String hobbyName = "Sports";
-    private String address = "Bla bla street 1";
-    private String stateName = "Uttar Pradesh";
-    private String cityName = "Lucknow";
+    private final String filePath = "img/",
+            fileName = "category_flowers.jpg",
+            firstName = "Evgeniya",
+            lastName = "Malysheva",
+            email = "email@yandex.ru",
+            gender = "Female",
+            phoneNumber = "1234567890",
+            birthDaySent = "30",
+            birthMonthSent = "August",
+            birthYearSent = "1987",
+            subjectName = "Maths",
+            hobbyName = "Sports",
+            address = "Bla bla street 1",
+            stateName = "Uttar Pradesh",
+            cityName = "Lucknow";
 
     @Test
     void successfulAllFieldsRegistrationTest() {
@@ -29,12 +29,12 @@ public class RegistrationWithPageObjectsTests extends TestBase {
                 .setEmail(email)
                 .setGender(gender)
                 .setPhoneNumber(phoneNumber)
-                .setBirthDay(birthDaySent,birthMonthSent,birthYearSent)
+                .setBirthDay(birthDaySent, birthMonthSent, birthYearSent)
                 .setSubject(subjectName)
                 .setHobby(hobbyName)
                 .uploadPicture(filePath, fileName)
                 .setAddress(address)
-                .setStateAndCity(stateName,cityName)
+                .setStateAndCity(stateName, cityName)
                 .submitForm()
                 .checkResult();
 
@@ -57,12 +57,12 @@ public class RegistrationWithPageObjectsTests extends TestBase {
     void checkErrorFirstNameTest() {
 
         registrationPage.openRegistrationPage()
-                .checkBorderColor("first_name","grey")
+                .checkBorderColor("first_name", "grey")
                 .setLastName(lastName)
                 .setGender(gender)
                 .setPhoneNumber(phoneNumber)
                 .submitErrorForm()
-                .checkBorderColor("first_name","red");
+                .checkBorderColor("first_name", "red");
 
     }
 
@@ -70,14 +70,14 @@ public class RegistrationWithPageObjectsTests extends TestBase {
     void checkErrorEmailTest() {
 
         registrationPage.openRegistrationPage()
-                .checkBorderColor("email","grey")
+                .checkBorderColor("email", "grey")
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(" ")
                 .setGender(gender)
                 .setPhoneNumber(phoneNumber)
                 .submitErrorForm()
-                .checkBorderColor("email","red");
+                .checkBorderColor("email", "red");
 
     }
 
@@ -85,13 +85,13 @@ public class RegistrationWithPageObjectsTests extends TestBase {
     void checkErrorPhoneNumberTest() {
 
         registrationPage.openRegistrationPage()
-                .checkBorderColor("phone","grey")
+                .checkBorderColor("phone", "grey")
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setGender(gender)
                 .setPhoneNumber("1")
                 .submitErrorForm()
-                .checkBorderColor("phone","red");
+                .checkBorderColor("phone", "red");
 
     }
 

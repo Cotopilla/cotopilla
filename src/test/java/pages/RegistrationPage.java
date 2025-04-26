@@ -5,8 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 import pages.components.ModalDialogComponent;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
@@ -29,9 +29,14 @@ public class RegistrationPage {
             submitButton = $("#submit"),
             resultTable = $(".table-responsive");
 
-    CalendarComponent calendarComponent = new CalendarComponent();
-    ModalDialogComponent modalDialogComponent = new ModalDialogComponent();
-    ArrayList<String> arrayList = new ArrayList<>();
+    private String cssPropertyName = "border-color",
+            redColor = "rgb(220, 53, 69)",
+            greyColor = "rgb(206, 212, 218)";
+
+
+    private CalendarComponent calendarComponent = new CalendarComponent();
+    private ModalDialogComponent modalDialogComponent = new ModalDialogComponent();
+    private ArrayList<String> arrayList = new ArrayList<>();
 
     public RegistrationPage openRegistrationPage() {
         open("/automation-practice-form");
@@ -135,6 +140,41 @@ public class RegistrationPage {
         arrayList.forEach(x -> resultTable.shouldHave(text(x)));
 
         return this;
+    }
+
+//    negative tests methods
+
+    public RegistrationPage submitErrorForm() {
+        submitButton.click();
+        modalDialogComponent.notAppearingForm();
+
+        return this;
+    }
+
+    public RegistrationPage checkBorderColor(String field, String color) {
+        String checkingColor = null;
+        if (color.equals("red")) {
+            checkingColor = redColor;
+        } else if (color.equals("grey")) {
+            checkingColor = greyColor;
+        } else throw new IllegalArgumentException("Неверно задан цвет");
+
+        switch (field) {
+            case "first_name":
+                firstNameInput.shouldHave(cssValue(cssPropertyName, checkingColor));
+                break;
+            case "email":
+                emailInput.shouldHave(cssValue(cssPropertyName, checkingColor));
+                break;
+            case "phone":
+                phoneNumberInput.shouldHave(cssValue(cssPropertyName, checkingColor));
+                break;
+            default:
+                throw new IllegalArgumentException("Неверно указано название поля ввода");
+        }
+
+        return this;
+
     }
 
 }

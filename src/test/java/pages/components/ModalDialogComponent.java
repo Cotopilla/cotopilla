@@ -19,4 +19,10 @@ public class ModalDialogComponent {
 
         return this;
     }
+
+    public ModalDialogComponent notAppearingForm() {
+        modalDialog.shouldNot(appear);
+
+        return this;
+    }
 }

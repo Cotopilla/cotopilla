@@ -1,6 +1,7 @@
 package tests.demoqa;
 
 import org.junit.jupiter.api.Test;
+import pages.RegistrationPage;
 
 
 public class RegistrationWithPageObjectsTests extends TestBase {
@@ -19,6 +20,8 @@ public class RegistrationWithPageObjectsTests extends TestBase {
             address = "Bla bla street 1",
             stateName = "Uttar Pradesh",
             cityName = "Lucknow";
+
+    protected RegistrationPage registrationPage = new RegistrationPage();
 
     @Test
     void successfulAllFieldsRegistrationTest() {

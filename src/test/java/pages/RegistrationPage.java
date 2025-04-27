@@ -41,10 +41,14 @@ public class RegistrationPage {
     public RegistrationPage openRegistrationPage() {
         open("/automation-practice-form");
         $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
+        removeBanners();
+        return this;
+    }
+
+    public void removeBanners(){
         executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры, чтобы не возникла
         executeJavaScript("$('footer').remove()");      //ошибка element click intercepted для кнопки Submit
 
-        return this;
     }
 
     public RegistrationPage setFirstName(String value) {

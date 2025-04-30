@@ -29,10 +29,6 @@ public class RegistrationPage {
             submitButton = $("#submit"),
             resultTable = $(".table-responsive");
 
-    private String cssPropertyName = "border-color",
-            redColor = "rgb(220, 53, 69)",
-            greyColor = "rgb(206, 212, 218)";
-
 
     private CalendarComponent calendarComponent = new CalendarComponent();
     private ModalDialogComponent modalDialogComponent = new ModalDialogComponent();
@@ -45,7 +41,7 @@ public class RegistrationPage {
         return this;
     }
 
-    public void removeBanners(){
+    public void removeBanners() {
         executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры, чтобы не возникла
         executeJavaScript("$('footer').remove()");      //ошибка element click intercepted для кнопки Submit
 
@@ -154,22 +150,25 @@ public class RegistrationPage {
     }
 
     public RegistrationPage checkBorderColor(String field, String color) {
-        String checkingColor = null;
+        String cssPropertyName = "border-color",
+                redColor = "rgb(220, 53, 69)",
+                greyColor = "rgb(206, 212, 218)";
+        String expectedColor = null;
         if (color.equals("red")) {
-            checkingColor = redColor;
+            expectedColor = redColor;
         } else if (color.equals("grey")) {
-            checkingColor = greyColor;
+            expectedColor = greyColor;
         } else throw new IllegalArgumentException("Неверно задан цвет");
 
         switch (field) {
             case "first_name":
-                firstNameInput.shouldHave(cssValue(cssPropertyName, checkingColor));
+                firstNameInput.shouldHave(cssValue(cssPropertyName, expectedColor));
                 break;
             case "email":
-                emailInput.shouldHave(cssValue(cssPropertyName, checkingColor));
+                emailInput.shouldHave(cssValue(cssPropertyName, expectedColor));
                 break;
             case "phone":
-                phoneNumberInput.shouldHave(cssValue(cssPropertyName, checkingColor));
+                phoneNumberInput.shouldHave(cssValue(cssPropertyName, expectedColor));
                 break;
             default:
                 throw new IllegalArgumentException("Неверно указано название поля ввода");

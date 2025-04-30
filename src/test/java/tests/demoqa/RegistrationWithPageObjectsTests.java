@@ -1,25 +1,32 @@
 package tests.demoqa;
 
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import pages.RegistrationPage;
 
+import java.util.Locale;
+
+import static utils.RandomUtils.*;
 
 public class RegistrationWithPageObjectsTests extends TestBase {
-    private final String filePath = "img/",
-            fileName = "category_flowers.jpg",
-            firstName = "Evgeniya",
-            lastName = "Malysheva",
-            email = "email@yandex.ru",
-            gender = "Female",
-            phoneNumber = "1234567890",
-            birthDaySent = "30",
-            birthMonthSent = "August",
-            birthYearSent = "1987",
-            subjectName = "Maths",
-            hobbyName = "Sports",
-            address = "Bla bla street 1",
-            stateName = "Uttar Pradesh",
-            cityName = "Lucknow";
+
+    Faker faker = new Faker(new Locale("en"));
+
+    private final String firstName = faker.name().firstName(),
+            lastName = faker.name().lastName(),
+            email = faker.internet().emailAddress(),
+            gender = getRandomGender(),
+            phoneNumber = getRandomPhoneNumber(),
+            birthDaySent = getRandomBirthDay(),
+            birthMonthSent = getRandomBirthMonth(),
+            birthYearSent = getRandomBirthYear(),
+            subjectName = getRandomSubject(),
+            hobbyName = getRandomHobby(),
+            address = faker.address().fullAddress(),
+            stateName = "NCR",
+            cityName = getRandomCity(),
+            filePath = "img/",
+            fileName = "category_flowers.jpg";
 
     protected RegistrationPage registrationPage = new RegistrationPage();
 

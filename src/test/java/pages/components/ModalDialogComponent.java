@@ -11,18 +11,13 @@ public class ModalDialogComponent {
     private SelenideElement modalDialog = $(".modal-dialog"),
             modalTitle = $("#example-modal-sizes-title-lg");
 
-    private String modalText = "Thanks for submitting the form";
-
-    public ModalDialogComponent waitingForm() {
+    public void waitingForm() {
+        String modalText = "Thanks for submitting the form";
         modalDialog.should(appear);
         modalTitle.shouldHave(text(modalText));
-
-        return this;
     }
 
-    public ModalDialogComponent notAppearingForm() {
+    public void notAppearingForm() {
         modalDialog.shouldNot(appear);
-
-        return this;
     }
 }

@@ -30,9 +30,9 @@ public class RegistrationPage {
             resultTable = $(".table-responsive");
 
 
-    private CalendarComponent calendarComponent = new CalendarComponent();
-    private ModalDialogComponent modalDialogComponent = new ModalDialogComponent();
-    private ArrayList<String> arrayList = new ArrayList<>();
+    private final CalendarComponent calendarComponent = new CalendarComponent();
+    private final ModalDialogComponent modalDialogComponent = new ModalDialogComponent();
+    private final ArrayList<String> arrayList = new ArrayList<>();
 
     public RegistrationPage openRegistrationPage() {
         open("/automation-practice-form");
@@ -153,7 +153,7 @@ public class RegistrationPage {
         String cssPropertyName = "border-color",
                 redColor = "rgb(220, 53, 69)",
                 greyColor = "rgb(206, 212, 218)";
-        String expectedColor = null;
+        String expectedColor;
         if (color.equals("red")) {
             expectedColor = redColor;
         } else if (color.equals("grey")) {

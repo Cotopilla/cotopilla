@@ -4,7 +4,7 @@ import static utils.RandomUtils.*;
 
 public class TestData {
 
-    public static final String firstName = getRandomFirstName(),
+    protected String firstName = getRandomFirstName(),
             lastName = getRandomLastName(),
             email = getRandomEmailAddress(),
             gender = getRandomGender(),

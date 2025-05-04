@@ -87,23 +87,14 @@ public class RandomUtils {
     }
 
     public static String getRandomCity(String stateName) {
-        String cityName = null;
-        switch (stateName) {
-            case "NCR":
-                cityName = faker.options().option("Delhi", "Gurgaon", "Noida");
-                break;
-            case "Uttar Pradesh":
-                cityName = faker.options().option("Agra", "Lucknow", "Merrut");
-                break;
-            case "Haryana":
-                cityName = faker.options().option("Karnal", "Panipat");
-                break;
-            case "Rajasthan":
-                cityName = faker.options().option("Jaipur", "Jaiselmer");
-                break;
-        }
+        return switch (stateName) {
+            case "NCR" -> faker.options().option("Delhi", "Gurgaon", "Noida");
+            case "Uttar Pradesh" -> faker.options().option("Agra", "Lucknow", "Merrut");
+            case "Haryana" -> faker.options().option("Karnal", "Panipat");
+            case "Rajasthan" -> faker.options().option("Jaipur", "Jaiselmer");
+            default -> throw new IllegalArgumentException("Некорректный штат");
+        };
 
-        return cityName;
     }
 
 }

@@ -3,27 +3,26 @@ package tests.demoqa;
 import org.junit.jupiter.api.Test;
 import pages.RegistrationPage;
 
-import static tests.demoqa.TestData.*;
-
 public class RegistrationWithPageObjectsTests extends TestBase {
 
     protected RegistrationPage registrationPage = new RegistrationPage();
+    protected TestData testData = new TestData();
 
     @Test
     void successfulAllFieldsRegistrationTest() {
 
         registrationPage.openRegistrationPage()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setGender(gender)
-                .setPhoneNumber(phoneNumber)
-                .setBirthDay(birthDaySent, birthMonthSent, birthYearSent)
-                .setSubject(subjectName)
-                .setHobby(hobbyName)
-                .uploadPicture(filePath, fileName)
-                .setAddress(address)
-                .setStateAndCity(stateName, cityName)
+                .setFirstName(testData.firstName)
+                .setLastName(testData.lastName)
+                .setEmail(testData.email)
+                .setGender(testData.gender)
+                .setPhoneNumber(testData.phoneNumber)
+                .setBirthDay(testData.birthDaySent, testData.birthMonthSent, testData.birthYearSent)
+                .setSubject(testData.subjectName)
+                .setHobby(testData.hobbyName)
+                .uploadPicture(testData.filePath, testData.fileName)
+                .setAddress(testData.address)
+                .setStateAndCity(testData.stateName, testData.cityName)
                 .submitForm()
                 .checkResult();
 
@@ -33,10 +32,10 @@ public class RegistrationWithPageObjectsTests extends TestBase {
     void successfulRequiredFieldRegistrationTest() {
 
         registrationPage.openRegistrationPage()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setGender(gender)
-                .setPhoneNumber(phoneNumber)
+                .setFirstName(testData.firstName)
+                .setLastName(testData.lastName)
+                .setGender(testData.gender)
+                .setPhoneNumber(testData.phoneNumber)
                 .submitForm()
                 .checkResult();
 
@@ -47,9 +46,9 @@ public class RegistrationWithPageObjectsTests extends TestBase {
 
         registrationPage.openRegistrationPage()
                 .checkBorderColor("first_name", "grey")
-                .setLastName(lastName)
-                .setGender(gender)
-                .setPhoneNumber(phoneNumber)
+                .setLastName(testData.lastName)
+                .setGender(testData.gender)
+                .setPhoneNumber(testData.phoneNumber)
                 .submitErrorForm()
                 .checkBorderColor("first_name", "red");
 
@@ -60,11 +59,11 @@ public class RegistrationWithPageObjectsTests extends TestBase {
 
         registrationPage.openRegistrationPage()
                 .checkBorderColor("email", "grey")
-                .setFirstName(firstName)
-                .setLastName(lastName)
+                .setFirstName(testData.firstName)
+                .setLastName(testData.lastName)
                 .setEmail(" ")
-                .setGender(gender)
-                .setPhoneNumber(phoneNumber)
+                .setGender(testData.gender)
+                .setPhoneNumber(testData.phoneNumber)
                 .submitErrorForm()
                 .checkBorderColor("email", "red");
 
@@ -75,9 +74,9 @@ public class RegistrationWithPageObjectsTests extends TestBase {
 
         registrationPage.openRegistrationPage()
                 .checkBorderColor("phone", "grey")
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setGender(gender)
+                .setFirstName(testData.firstName)
+                .setLastName(testData.lastName)
+                .setGender(testData.gender)
                 .setPhoneNumber("1")
                 .submitErrorForm()
                 .checkBorderColor("phone", "red");

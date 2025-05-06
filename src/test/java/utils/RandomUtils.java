@@ -94,7 +94,5 @@ public class RandomUtils {
             case "Rajasthan" -> faker.options().option("Jaipur", "Jaiselmer");
             default -> throw new IllegalArgumentException("Некорректный штат");
         };
-
     }
-
 }

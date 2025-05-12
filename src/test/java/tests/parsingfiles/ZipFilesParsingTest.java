@@ -1,0 +1,73 @@
+package tests.parsingfiles;
+
+import com.codeborne.pdftest.PDF;
+import com.codeborne.xlstest.XLS;
+import com.opencsv.CSVReader;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+public class ZipFilesParsingTest {
+
+    private final ClassLoader cl = ZipFilesParsingTest.class.getClassLoader();
+
+    @Test
+    void pdfFromZipParsingTest() throws Exception {
+        try (InputStream is = cl.getResourceAsStream("parsingfiles/readcheckfiles.zip");
+             ZipInputStream zis = new ZipInputStream(is)) {
+            ZipEntry zipEntry;
+            while ((zipEntry = zis.getNextEntry()) != null) {
+                if (zipEntry.getName().endsWith(".pdf")) {
+                    PDF pdf = new PDF(zis);
+                    Assertions.assertTrue(pdf.text.contains("Тестовый PDF-документ"));
+                }
+            }
+        }
+    }
+
+    @Test
+    void xlsFromZipParsingTest() throws Exception {
+        try (InputStream is = cl.getResourceAsStream("parsingfiles/readcheckfiles.zip")) {
+            if (is != null) {
+                try (ZipInputStream zis = new ZipInputStream(is)) {
+                    ZipEntry zipEntry;
+                    while ((zipEntry = zis.getNextEntry()) != null) {
+                        if (zipEntry.getName().endsWith(".xlsx")) {
+                            XLS xls = new XLS(zis);
+                            String actualValue = xls.excel.getSheetAt(0).getRow(1).getCell(1).getStringCellValue();
+                            Assertions.assertEquals("Тестовый XLS-документ", actualValue);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    void csvFromZipParsingTest() throws Exception {
+        try (InputStream is = cl.getResourceAsStream("parsingfiles/readcheckfiles.zip");
+             ZipInputStream zis = new ZipInputStream(is)) {
+            ZipEntry zipEntry;
+            while ((zipEntry = zis.getNextEntry()) != null) {
+                if (zipEntry.getName().endsWith(".csv")) {
+                    CSVReader csv = new CSVReader(new InputStreamReader(zis));
+                    List<String[]> csvStrings = csv.readAll();
+                    Assertions.assertEquals(5, csvStrings.size());
+                    Assertions.assertArrayEquals(
+                            new String[]{"Тестовый CSV-документ"},
+                            csvStrings.get(4)
+                    );
+                    Assertions.assertArrayEquals(
+                            new String[]{"Никакой полезной информации он не несёт."},
+                            csvStrings.get(3)
+                    );
+                }
+            }
+        }
+    }
+}

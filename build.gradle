@@ -9,13 +9,16 @@ repositories {
 
 dependencies {
     testImplementation (
-            "com.codeborne:selenide:7.5.0",
-            "com.github.javafaker:javafaker:1.0.2",
-            "org.junit.jupiter:junit-jupiter:5.9.3",
-            "commons-io:commons-io:2.19.0",
-            "com.codeborne:pdf-test:1.5.0",
-            "com.codeborne:xls-test:1.4.3",
-            "com.opencsv:opencsv:5.11"
+            'com.codeborne:selenide:7.5.0',
+            'com.github.javafaker:javafaker:1.0.2',
+            'org.junit.jupiter:junit-jupiter:5.9.3',
+            'commons-io:commons-io:2.19.0',
+            'com.codeborne:pdf-test:1.5.0',
+            'com.codeborne:xls-test:1.4.3',
+            'com.opencsv:opencsv:5.11',
+            'com.google.code.gson:gson:2.13.1',
+            'com.fasterxml.jackson.core:jackson-core:2.19.0',
+            'com.fasterxml.jackson.core:jackson-databind:2.19.0'
             )
 }
 

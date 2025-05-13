@@ -1,9 +1,6 @@
+//from lesson 9
+
 package tests.parsingfiles;
-
-//import com.google.gson.Gson;
-//import com.google.gson.JsonObject;
-
-//import guru.qa.model.Glossary;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
@@ -18,17 +15,13 @@ import java.io.InputStreamReader;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-//import java.io.Reader;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-//import java.util.zip.ZipEntry;
-//import java.util.zip.ZipInputStream;
 
 public class FilesParsingTest {
 
     private ClassLoader cl = FilesParsingTest.class.getClassLoader();
-//    private static final Gson gson = new Gson();
 
     @Test
     void pdfFileParsingTest() throws Exception {
@@ -79,35 +72,4 @@ public class FilesParsingTest {
             }
         }
     }
-
-//    @Test
-//    void jsonFileParsingTest() throws Exception {
-//        try (Reader reader = new InputStreamReader(
-//                cl.getResourceAsStream("glossary.json")
-//        )) {
-//            JsonObject actual = gson.fromJson(reader, JsonObject.class);
-//
-//            Assertions.assertEquals("example glossary", actual.get("title").getAsString());
-//            Assertions.assertEquals(234234, actual.get("ID").getAsInt());
-//
-//            JsonObject inner = actual.get("glossary").getAsJsonObject();
-//
-//            Assertions.assertEquals("SGML", inner.get("SortAs").getAsString());
-//            Assertions.assertEquals("Standard Generalized Markup Language", inner.get("GlossTerm").getAsString());
-//        }
-//    }
-//
-//    @Test
-//    void jsonFileParsingImprovedTest() throws Exception {
-//        try (Reader reader = new InputStreamReader(
-//                cl.getResourceAsStream("glossary.json")
-//        )) {
-//            Glossary actual = gson.fromJson(reader, Glossary.class);
-//
-//            Assertions.assertEquals("example glossary", actual.getTitle());
-//            Assertions.assertEquals(234234, actual.getID());
-//            Assertions.assertEquals("SGML", actual.getGlossary().getSortAs());
-//            Assertions.assertEquals("Standard Generalized Markup Language", actual.getGlossary().getGlossTerm());
-//        }
-//    }
 }

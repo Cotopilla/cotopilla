@@ -14,7 +14,7 @@ import java.util.zip.ZipInputStream;
 
 public class ZipFilesParsingTest {
 
-    private final ClassLoader cl = ZipFilesParsingTest.class.getClassLoader();
+    private ClassLoader cl = ZipFilesParsingTest.class.getClassLoader();
 
     @Test
     void pdfFromZipParsingTest() throws Exception {
@@ -50,8 +50,9 @@ public class ZipFilesParsingTest {
 
     @Test
     void csvFromZipParsingTest() throws Exception {
-        try (InputStream is = cl.getResourceAsStream("parsingfiles/readcheckfiles.zip");
-             ZipInputStream zis = new ZipInputStream(is)) {
+        try (ZipInputStream zis = new ZipInputStream(
+                cl.getResourceAsStream("parsingfiles/readcheckfiles.zip")
+        )) {
             ZipEntry zipEntry;
             while ((zipEntry = zis.getNextEntry()) != null) {
                 if (zipEntry.getName().endsWith(".csv")) {
@@ -63,8 +64,8 @@ public class ZipFilesParsingTest {
                             csvStrings.get(4)
                     );
                     Assertions.assertArrayEquals(
-                            new String[]{"Никакой полезной информации он не несёт."},
-                            csvStrings.get(3)
+                            new String[]{"Это документ в формате PDF", " который был создан для тестирования загрузки файлов."},
+                            csvStrings.get(2)
                     );
                 }
             }

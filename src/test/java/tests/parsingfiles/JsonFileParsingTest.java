@@ -12,6 +12,7 @@ import tests.parsingfiles.model.SchoolAddress;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Arrays;
 
 public class JsonFileParsingTest {
 
@@ -71,6 +72,8 @@ public class JsonFileParsingTest {
             String[] classesName = school.getClassName();
             Assertions.assertEquals(4, classesName.length);
             Assertions.assertEquals("5Г", classesName[3]);
+            System.out.println(Arrays.toString(classesName));
+            Assertions.assertArrayEquals(new String[]{"5А", "5Б", "5В", "5Г"},classesName);
         }
     }
 

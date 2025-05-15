@@ -44,7 +44,6 @@ public class WebStepsIssueNameTest {
     public void findIssueByName(){
         $("[data-listview-component='items-list']").
                 shouldHave(text("Dark Theme Support"));
-
     }
 
 }

@@ -70,6 +70,5 @@ public class IssueNameTest {
                 .moveToRepository(REPOSITORY)
                 .checkAndClickToIssueTab()
                 .findIssueByName();
-
     }
 }

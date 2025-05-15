@@ -1,6 +1,6 @@
 //from lesson 9
 
-package tests.parsingfiles;
+package tests.parsingfiles.lesson9;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;

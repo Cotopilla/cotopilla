@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tests.parsingfiles.lesson9.FilesParsingTest;
 import tests.parsingfiles.model.Glossary;
 import tests.parsingfiles.model.School;
 import tests.parsingfiles.model.SchoolAddress;

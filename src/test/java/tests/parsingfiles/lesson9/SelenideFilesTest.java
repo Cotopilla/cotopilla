@@ -1,6 +1,6 @@
 //from lesson 9
 
-package tests.parsingfiles;
+package tests.parsingfiles.lesson9;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

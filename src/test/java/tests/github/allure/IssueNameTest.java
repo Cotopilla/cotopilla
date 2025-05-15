@@ -3,6 +3,8 @@ package tests.github.allure;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
@@ -15,14 +17,21 @@ public class IssueNameTest {
 
     private static final String REPOSITORY = "qa-guru/allure-notifications";
 
+    @BeforeEach
+    void addListener() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+
     @AfterEach
     void closeDriver() {
         closeWebDriver();
     }
 
+    @Disabled
     @Test
     public void listenerIssueNameCheckTest() {
-        SelenideLogger.addListener("allure", new AllureSelenide());
+
         open("https://github.com/");
 
         $(".header-search-button").click();

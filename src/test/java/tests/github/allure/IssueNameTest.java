@@ -65,11 +65,11 @@ public class IssueNameTest {
     public void stepsIssueNameCheckTest() {
         WebStepsIssueNameTest webSteps = new WebStepsIssueNameTest();
 
-        webSteps.openTheMainPage(REPOSITORY);
-        webSteps.fillTheSearchBar(REPOSITORY);
-        webSteps.moveToRepository(REPOSITORY);
-        webSteps.checkAndClickToIssueTab();
-        webSteps.findIssueByName();
+        webSteps.openTheMainPage()
+                .fillTheSearchBar(REPOSITORY)
+                .moveToRepository(REPOSITORY)
+                .checkAndClickToIssueTab()
+                .findIssueByName();
 
     }
 }

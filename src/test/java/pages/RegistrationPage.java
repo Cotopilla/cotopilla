@@ -45,7 +45,8 @@ public class RegistrationPage {
         executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры, чтобы не возникла
         executeJavaScript("$('footer').remove()");      //ошибка element click intercepted для кнопки Submit
 //        executeJavaScript("$('#RightSide_Advertisement').remove()");
-        executeJavaScript("var iframe = document.querySelector('iframe'); if (iframe) { iframe.remove(); }");
+
+        executeJavaScript("$('ins[id='gpt_unit_/21849154601,22343295815/Ad.Plus-300x250_1']').remove()");
 
     }
 

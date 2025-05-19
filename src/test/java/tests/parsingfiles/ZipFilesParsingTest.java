@@ -6,12 +6,13 @@ import com.opencsv.CSVReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ZipFilesParsingTest {
 
@@ -21,48 +22,51 @@ public class ZipFilesParsingTest {
 
     @Test
     void pdfFromZipParsingTest() throws Exception {
+        boolean pdfFound = false;
         try (InputStream is = cl.getResourceAsStream(emptyZipFile)) {
             try (ZipInputStream zis = new ZipInputStream(is)) {
-                if (zis.getNextEntry() != null) {
-                    ZipEntry zipEntry;
-                    while ((zipEntry = zis.getNextEntry()) != null) {
-                        if (zipEntry.getName().endsWith(".pdf")) {
-                            PDF pdf = new PDF(zis);
-                            Assertions.assertTrue(pdf.text.contains("Тестовый PDF-документ"));
-                        }
+                ZipEntry zipEntry;
+                while ((zipEntry = zis.getNextEntry()) != null) {
+                    if (zipEntry.getName().endsWith(".pdf")) {
+                        pdfFound = true;
+                        PDF pdf = new PDF(zis);
+                        Assertions.assertTrue(pdf.text.contains("Тестовый PDF-документ"));
                     }
-                } else throw new FileNotFoundException("Архив пустой");
+                }
+                assertThat(pdfFound).isTrue();
             }
         }
     }
 
     @Test
     void xlsFromZipParsingTest() throws Exception {
-        try (InputStream is = cl.getResourceAsStream(zipFile)) {
+        boolean xlsFound = false;
+        try (InputStream is = cl.getResourceAsStream(emptyZipFile)) {
             try (ZipInputStream zis = new ZipInputStream(is)) {
-                if (zis.getNextEntry() != null) {
-                    ZipEntry zipEntry;
-                    while ((zipEntry = zis.getNextEntry()) != null) {
-                        if (zipEntry.getName().endsWith(".xlsx")) {
-                            XLS xls = new XLS(zis);
-                            String actualValue = xls.excel.getSheetAt(0).getRow(1).getCell(1).getStringCellValue();
-                            Assertions.assertEquals("Тестовый XLS-документ", actualValue);
-                        }
+                ZipEntry zipEntry;
+                while ((zipEntry = zis.getNextEntry()) != null) {
+                    if (zipEntry.getName().endsWith(".xlsx")) {
+                        xlsFound = true;
+                        XLS xls = new XLS(zis);
+                        String actualValue = xls.excel.getSheetAt(0).getRow(1).getCell(1).getStringCellValue();
+                        Assertions.assertEquals("Тестовый XLS-документ", actualValue);
                     }
-                } else throw new FileNotFoundException("Архив пустой");
+                }
+                assertThat(xlsFound).isTrue();
             }
         }
     }
 
     @Test
     void csvFromZipParsingTest() throws Exception {
+        boolean csvFound = false;
         try (ZipInputStream zis = new ZipInputStream(
-                cl.getResourceAsStream(zipFile)
+                cl.getResourceAsStream(emptyZipFile)
         )) {
-            if (zis.getNextEntry() != null) {
                 ZipEntry zipEntry;
                 while ((zipEntry = zis.getNextEntry()) != null) {
                     if (zipEntry.getName().endsWith(".csv")) {
+                        csvFound = true;
                         CSVReader csv = new CSVReader(new InputStreamReader(zis));
                         List<String[]> csvStrings = csv.readAll();
                         Assertions.assertEquals(5, csvStrings.size());
@@ -71,12 +75,12 @@ public class ZipFilesParsingTest {
                                 csvStrings.get(4)
                         );
                         Assertions.assertArrayEquals(
-                                new String[]{"Это документ в формате PDF", " который был создан для тестирования загрузки файлов."},
+                                new String[]{"Это документ в формате CSV", " который был создан для тестирования загрузки файлов."},
                                 csvStrings.get(2)
                         );
                     }
                 }
-            } else throw new FileNotFoundException("Архив пустой");
+                assertThat(csvFound).isTrue();
         }
     }
 }

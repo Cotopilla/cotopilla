@@ -44,7 +44,8 @@ public class RegistrationPage {
     public void removeBanners() {
         executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры, чтобы не возникла
         executeJavaScript("$('footer').remove()");      //ошибка element click intercepted для кнопки Submit
-        executeJavaScript("$('#RightSide_Advertisement').remove()");
+//        executeJavaScript("$('#RightSide_Advertisement').remove()");
+        executeJavaScript("var iframe = document.querySelector('iframe'); if (iframe) { iframe.remove(); }");
 
     }
 

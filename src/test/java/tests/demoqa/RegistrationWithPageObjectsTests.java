@@ -1,8 +1,10 @@
 package tests.demoqa;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.RegistrationPage;
 
+@Tag("demoqa")
 public class RegistrationWithPageObjectsTests extends TestBase {
 
     protected RegistrationPage registrationPage = new RegistrationPage();

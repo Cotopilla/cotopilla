@@ -134,6 +134,7 @@ public class RegistrationPage {
 
     public RegistrationPage submitForm() {
         executeJavaScript("$('ins[id='gpt_unit_/21849154601,22343295815/Ad.Plus-300x250_1']').remove()");
+        executeJavaScript("$('iframe[id='google_ads_iframe_/21849154601,22343295815/Ad.Plus-300x250_1']').remove()");
         submitButton.click();
         modalDialogComponent.waitingForm();
 

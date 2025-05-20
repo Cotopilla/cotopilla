@@ -44,10 +44,6 @@ public class RegistrationPage {
     public void removeBanners() {
         executeJavaScript("$('#fixedban').remove()");   //убираем всплывающие баннеры, чтобы не возникла
         executeJavaScript("$('footer').remove()");      //ошибка element click intercepted для кнопки Submit
-//        executeJavaScript("$('#RightSide_Advertisement').remove()");
-
-//        executeJavaScript("$('ins[id='gpt_unit_/21849154601,22343295815/Ad.Plus-300x250_1']').remove()");
-
     }
 
     public RegistrationPage setFirstName(String value) {
@@ -123,7 +119,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setStateAndCity(String state, String city) {
-        stateInput.click();
+        stateInput.scrollIntoView(true).click();
         stateCityWrapper.$(byText(state)).click();
         cityInput.click();
         stateCityWrapper.$(byText(city)).click();
@@ -133,9 +129,8 @@ public class RegistrationPage {
     }
 
     public RegistrationPage submitForm() {
-        executeJavaScript("$('ins[id='gpt_unit_/21849154601,22343295815/Ad.Plus-300x250_1']').remove()");
-        executeJavaScript("$('iframe[id='google_ads_iframe_/21849154601,22343295815/Ad.Plus-300x250_1']').remove()");
-        submitButton.click();
+        $("#state").scrollIntoView(true);
+        submitButton.scrollIntoView(true).click();
         modalDialogComponent.waitingForm();
 
         return this;

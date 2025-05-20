@@ -129,7 +129,6 @@ public class RegistrationPage {
     }
 
     public RegistrationPage submitForm() {
-        $("#state").scrollIntoView(true);
         submitButton.scrollIntoView(true).click();
         modalDialogComponent.waitingForm();
 
@@ -143,7 +142,7 @@ public class RegistrationPage {
 //    negative tests methods
 
     public RegistrationPage submitErrorForm() {
-        submitButton.click();
+        submitButton.scrollIntoView(true).click();
         modalDialogComponent.notAppearingForm();
 
         return this;

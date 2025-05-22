@@ -19,4 +19,9 @@ public class TestData {
             cityName = getRandomCity(stateName),
             filePath = getFilePath(),
             fileName = getFileName();
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 }
+

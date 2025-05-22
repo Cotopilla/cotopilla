@@ -20,13 +20,16 @@ public class RegistrationRemotePropertyTests {
 
     protected RegistrationPage registrationPage = new RegistrationPage();
     protected TestData testData = new TestData();
+    static String selenoid = "https://"
+            + System.getProperty("selenoid")
+            + "/wd/hub";
 
     @BeforeAll
     static void setBrowserParams() {
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browserSize = "1920x1080";
         Configuration.pageLoadStrategy = "eager";
-        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+        Configuration.remote = selenoid;
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(

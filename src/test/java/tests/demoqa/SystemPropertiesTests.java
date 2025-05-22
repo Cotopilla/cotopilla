@@ -2,6 +2,7 @@
 
 package tests.demoqa;
 
+import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ import static java.lang.String.format;
 public class SystemPropertiesTests {
 
     @Test
+//    @Tag("property")
     void systemPropertiesTest() {
         String browser = System.getProperty("browser");
 
@@ -40,15 +42,15 @@ public class SystemPropertiesTests {
     }
 
     @Test
-    @Tag("property")
+//    @Tag("property")
     void systemProperties4Test() {
         String browser = System.getProperty("browser", "mozilla");
 
         System.out.println(browser);
-        // gradle property_test
+        // gradle demoqa_property_test
         // mozilla
 
-        // gradle property_test -Dbrowser=opera
+        // gradle demoqa_property_test -Dbrowser=opera
         // opera
     }
 
@@ -70,4 +72,21 @@ public class SystemPropertiesTests {
         // Hello, Alex Egorov!
 
     }
+
+    @Test
+//    @Tag("property")
+    void systemProperties6Test() {
+        String selenoidUrl = "https://"
+                + System.getProperty("selenoid")
+                + "/wd/hub";
+
+        System.out.println(selenoidUrl);
+        System.out.println(System.getProperty("selenoid"));
+        // gradle property_test
+        // mozilla
+
+        // gradle property_test -Dbrowser=opera
+        // opera
+    }
+
 }

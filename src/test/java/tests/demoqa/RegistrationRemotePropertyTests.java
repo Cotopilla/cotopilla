@@ -29,7 +29,8 @@ public class RegistrationRemotePropertyTests {
         Configuration.browserSize = System.getProperty("resolution");
         Configuration.pageLoadStrategy = "eager";
         Configuration.remote = "https://"
-                + System.getProperty("selenoid")
+                + System.getProperty("selenoidCredentials")
+                + System.getProperty("selenoidUrl")
                 + "/wd/hub";
 
         DesiredCapabilities capabilities = new DesiredCapabilities();

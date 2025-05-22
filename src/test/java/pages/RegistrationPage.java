@@ -98,7 +98,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setHobby(String value) {
-        hobbiesWrapper.$(byText(value)).click();
+        hobbiesWrapper.scrollIntoView(true).$(byText(value)).click();
         arrayList.add(value);
 
         return this;

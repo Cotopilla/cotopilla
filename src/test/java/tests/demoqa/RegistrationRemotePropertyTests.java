@@ -24,7 +24,9 @@ public class RegistrationRemotePropertyTests {
     @BeforeAll
     static void setBrowserParams() {
         Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = "1920x1080";
+        Configuration.browser = System.getProperty("browser");
+        Configuration.browserVersion = System.getProperty("version");
+        Configuration.browserSize = System.getProperty("resolution");
         Configuration.pageLoadStrategy = "eager";
         Configuration.remote = "https://"
                 + System.getProperty("selenoid")

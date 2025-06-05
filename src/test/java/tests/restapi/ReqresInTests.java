@@ -4,114 +4,110 @@ import io.qameta.allure.Owner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static io.restassured.http.ContentType.JSON;
+import static java.net.HttpURLConnection.*;
 import static org.hamcrest.Matchers.is;
 
 @Owner("Evgeniya Malysheva")
-public class ReqresInTests {
+public class ReqresInTests extends TestBase {
 
-    String freeApiKeyName = "x-api-key",
-            freeApiKeyValue = "reqres-free-v1";
+    int validUserId = 2;
+    int notValidUserId = 23;
 
     @Test
     @DisplayName("Запрос данных по несуществующему пользователю")
     void singleUserNotFound404Test() {
-        int userId = 23;
-
         given()
-                .header(freeApiKeyName, freeApiKeyValue)
+                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
                 .log().uri()
 
                 .when()
-                .get("https://reqres.in/api/users/" + userId)
+                .get(USERS_END_POINT + notValidUserId)
 
                 .then()
                 .log().status()
-                .statusCode(404)
+                .statusCode(HTTP_NOT_FOUND)
                 .body(is("{}"));
     }
 
     @Test
     @DisplayName("Изменение только должности пользователя (через patch)")
     void successfulPatchUserJobTest() {
-        int userId = 2;
-        String newUserData = "{\"job\": \"zion resident\"}";
+        String newUserDataBody = "{\"job\": \"zion resident\"}";
 
         given()
-                .header(freeApiKeyName, freeApiKeyValue)
-                .body(newUserData)
+                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
+                .body(newUserDataBody)
                 .contentType(JSON)
                 .log().uri()
 
                 .when()
-                .patch("https://reqres.in/api/users/" + userId)
+                .patch(USERS_END_POINT + validUserId)
 
                 .then()
                 .log().status()
                 .log().body()
-                .statusCode(200)
+                .statusCode(HTTP_OK)
                 .body("job", is("zion resident"));
     }
 
     @Test
     @DisplayName("Изменение должности пользователя через обновление всех полей записи (put)")
     void successfulUpdateUserJobTest() {
-        int userId = 2;
-        String newUserData = "{\"name\": \"morpheus\", \"job\": \"zion resident\"}";
+        String newUserDataBody = "{\"name\": \"morpheus\", \"job\": \"zion resident\"}";
 
         given()
-                .header(freeApiKeyName, freeApiKeyValue)
-                .body(newUserData)
+                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
+                .body(newUserDataBody)
                 .contentType(JSON)
                 .log().uri()
 
                 .when()
-                .put("https://reqres.in/api/users/" + userId)
+                .put(USERS_END_POINT + validUserId)
 
                 .then()
                 .log().status()
                 .log().body()
-                .statusCode(200)
+                .statusCode(HTTP_OK)
                 .body("name", is("morpheus"))
                 .body("job", is("zion resident"));
     }
 
     @Test
     void successfulCreateUserTest() {
-        String userData = "{\"name\": \"morpheus\", \"job\": \"leader\"}";
+        String userDataBody = "{\"name\": \"morpheus\", \"job\": \"leader\"}";
 
         given()
-                .header(freeApiKeyName, freeApiKeyValue)
-                .body(userData)
+                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
+                .body(userDataBody)
                 .contentType(JSON)
                 .log().uri()
 
                 .when()
-                .post("https://reqres.in/api/users/")
+                .post(USERS_END_POINT)
 
                 .then()
                 .log().status()
                 .log().body()
-                .statusCode(201)
+                .statusCode(HTTP_CREATED)
                 .body("name", is("morpheus"));
     }
 
     @Test
     @DisplayName("Удаление пользователя")
     void successfulDeleteUserTest() {
-        int userId = 2;
         given()
-                .header(freeApiKeyName, freeApiKeyValue)
+                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
                 .contentType(JSON)
                 .log().uri()
 
                 .when()
-                .delete("https://reqres.in/api/users/" + userId)
+                .delete(USERS_END_POINT + validUserId)
 
                 .then()
                 .log().status()
-                .statusCode(204);
+                .statusCode(HTTP_NO_CONTENT);
     }
 
     @Test
@@ -120,18 +116,18 @@ public class ReqresInTests {
         String userCredentials = "{\"email\": \"sydney@fife\"}";
 
         given()
-                .header(freeApiKeyName, freeApiKeyValue)
+                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
                 .body(userCredentials)
                 .contentType(JSON)
                 .log().uri()
 
                 .when()
-                .post("https://reqres.in/api/register")
+                .post(REGISTER_END_POINT)
 
                 .then()
                 .log().status()
                 .log().body()
-                .statusCode(400)
+                .statusCode(HTTP_BAD_REQUEST)
                 .body("error", is("Missing password"));
     }
 

@@ -1,4 +1,4 @@
-package tests.restapi.lesson15;
+package tests.restapi.lesson15_16;
 
 import org.junit.jupiter.api.Test;
 

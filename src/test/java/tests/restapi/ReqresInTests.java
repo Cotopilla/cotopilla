@@ -3,6 +3,7 @@ package tests.restapi;
 import io.qameta.allure.Owner;
 import models.lombok.reqresin.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
@@ -11,6 +12,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.ReqresInSpecs.*;
 
+@Tag("reqresin")
 @Owner("Evgeniya Malysheva")
 public class ReqresInTests extends TestBase {
 

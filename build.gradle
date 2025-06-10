@@ -72,3 +72,9 @@ task demoqa_property_test(type: Test) {
         includeTags("property")
     }
 }
+
+task reqresin_test(type: Test) {
+    useJUnitPlatform {
+        includeTags("reqresin")
+    }
+}

@@ -52,8 +52,8 @@ public class ReqresInTests extends TestBase {
                         .extract().as(UpdateResponseModel.class));
 
         step("Check response", () -> {
-            assertEquals("morpheus", response.getName());
-            assertEquals("zion resident", response.getJob());
+            response.checkName("morpheus");     //проверка через метод модели
+            response.checkJob("zion resident");
         });
     }
 
@@ -76,7 +76,7 @@ public class ReqresInTests extends TestBase {
                         .extract().as(UpdateResponseModel.class));
 
         step("Check response", () -> {
-            assertEquals("morpheus", response.getName());
+            assertEquals("morpheus", response.getName());    //проверка через ассерт
             assertEquals("zion resident", response.getJob());
         });
     }
@@ -108,13 +108,14 @@ public class ReqresInTests extends TestBase {
     @Test
     @DisplayName("Удаление пользователя")
     void successfulDeleteUserTest() {
+        step("Delete user", () ->
         given(requestSpec)
 
                 .when()
                 .delete(USERS_END_POINT + validUserId)
 
                 .then()
-                .spec(deleteResponseSpec);
+                .spec(deleteResponseSpec));
     }
 
     @Test

@@ -30,7 +30,7 @@ public class ReqresInTests extends TestBase {
 
                         .then()
                         .spec(error404ResponseSpec)
-                        .body(is("{}")));
+                        .body(is("{}"))); //todo вынести в модель?
     }
 
     @Test

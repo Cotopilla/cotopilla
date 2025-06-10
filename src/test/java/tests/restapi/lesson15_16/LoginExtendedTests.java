@@ -2,14 +2,13 @@ package tests.restapi.lesson15_16;
 
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
-import models.lombok.LoginBodyLombokModel;
-import models.lombok.LoginResponseLombokModel;
-import models.lombok.MissingPasswordModel;
+import models.lombok.lesson16.LoginBodyLombokModel;
+import models.lombok.lesson16.LoginResponseLombokModel;
+import models.lombok.lesson16.MissingPasswordModel;
 import models.pojo.LoginBodyModel;
 import models.pojo.LoginResponseModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import specs.LoginSpec;
 
 import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.qameta.allure.Allure.step;
@@ -17,7 +16,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.LoginSpec.*;
+import static specs.lesson16.LoginSpec.*;
 
     public class LoginExtendedTests {
  /*
@@ -140,6 +139,7 @@ import static specs.LoginSpec.*;
             authData.setPassword("cityslicka");
 
             LoginResponseLombokModel response = given()
+                    .spec(authRequestSpec)
                     .filter(withCustomTemplates())
                     .log().uri()
                     .log().body()
@@ -167,6 +167,7 @@ import static specs.LoginSpec.*;
 
             LoginResponseLombokModel response = step("Make request", ()->
                     given()
+                            .spec(authRequestSpec)
                             .filter(withCustomTemplates())
                             .log().uri()
                             .log().body()

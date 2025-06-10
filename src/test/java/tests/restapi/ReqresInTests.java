@@ -1,13 +1,15 @@
 package tests.restapi;
 
 import io.qameta.allure.Owner;
+import models.lombok.reqresin.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
-import static io.restassured.http.ContentType.JSON;
-import static java.net.HttpURLConnection.*;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.ReqresInSpecs.*;
 
 @Owner("Evgeniya Malysheva")
 public class ReqresInTests extends TestBase {
@@ -18,117 +20,119 @@ public class ReqresInTests extends TestBase {
     @Test
     @DisplayName("Запрос данных по несуществующему пользователю")
     void singleUserNotFound404Test() {
-        given()
-                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
-                .log().uri()
+        step("Make request for not exist user", () ->
+                given(requestSpec)
 
-                .when()
-                .get(USERS_END_POINT + notValidUserId)
+                        .when()
+                        .get(USERS_END_POINT + notValidUserId)
 
-                .then()
-                .log().status()
-                .statusCode(HTTP_NOT_FOUND)
-                .body(is("{}"));
+                        .then()
+                        .spec(error404ResponseSpec)
+                        .body(is("{}")));
     }
 
     @Test
-    @DisplayName("Изменение только должности пользователя (через patch)")
+    @DisplayName("Изменение данных пользователя (через patch)")
     void successfulPatchUserJobTest() {
-        String newUserDataBody = "{\"job\": \"zion resident\"}";
+        CreateAndUpdateBodyModel updateUserDataBody = new CreateAndUpdateBodyModel();
+        updateUserDataBody.setName("morpheus");
+        updateUserDataBody.setJob("zion resident");
 
-        given()
-                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
-                .body(newUserDataBody)
-                .contentType(JSON)
-                .log().uri()
+        UpdateResponseModel response = step("Make update (PATCH) request", () ->
+                given(requestSpec)
+                        .body(updateUserDataBody)
 
-                .when()
-                .patch(USERS_END_POINT + validUserId)
+                        .when()
+                        .patch(USERS_END_POINT + validUserId)
 
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(HTTP_OK)
-                .body("job", is("zion resident"));
+                        .then()
+                        .spec(updateResponseSpec)
+                        .extract().as(UpdateResponseModel.class));
+
+        step("Check response", () -> {
+            assertEquals("morpheus", response.getName());
+            assertEquals("zion resident", response.getJob());
+        });
     }
 
     @Test
-    @DisplayName("Изменение должности пользователя через обновление всех полей записи (put)")
+    @DisplayName("Изменение данных пользователя (через put)")
     void successfulUpdateUserJobTest() {
-        String newUserDataBody = "{\"name\": \"morpheus\", \"job\": \"zion resident\"}";
+        CreateAndUpdateBodyModel updateUserDataBody = new CreateAndUpdateBodyModel();
+        updateUserDataBody.setName("morpheus");
+        updateUserDataBody.setJob("zion resident");
 
-        given()
-                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
-                .body(newUserDataBody)
-                .contentType(JSON)
-                .log().uri()
+        UpdateResponseModel response = step("Make update (PUT) request", () ->
+                given(requestSpec)
+                        .body(updateUserDataBody)
 
-                .when()
-                .put(USERS_END_POINT + validUserId)
+                        .when()
+                        .put(USERS_END_POINT + validUserId)
 
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(HTTP_OK)
-                .body("name", is("morpheus"))
-                .body("job", is("zion resident"));
+                        .then()
+                        .spec(updateResponseSpec)
+                        .extract().as(UpdateResponseModel.class));
+
+        step("Check response", () -> {
+            assertEquals("morpheus", response.getName());
+            assertEquals("zion resident", response.getJob());
+        });
     }
 
     @Test
+    @DisplayName("Успешное создание пользователя")
     void successfulCreateUserTest() {
-        String userDataBody = "{\"name\": \"morpheus\", \"job\": \"leader\"}";
+        CreateAndUpdateBodyModel newUserDataBody = new CreateAndUpdateBodyModel();
+        newUserDataBody.setName("morpheus");
+        newUserDataBody.setJob("zion resident");
 
-        given()
-                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
-                .body(userDataBody)
-                .contentType(JSON)
-                .log().uri()
+        CreateResponseModel response = step("Make create request", () ->
+                given(requestSpec)
+                        .body(newUserDataBody)
 
-                .when()
-                .post(USERS_END_POINT)
+                        .when()
+                        .post(USERS_END_POINT)
 
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(HTTP_CREATED)
-                .body("name", is("morpheus"));
+                        .then()
+                        .spec(createResponseSpec)
+                        .extract().as(CreateResponseModel.class));
+
+        step("Check response", () -> {
+            assertEquals("morpheus", response.getName());
+            assertEquals("zion resident", response.getJob());
+        });
     }
 
     @Test
     @DisplayName("Удаление пользователя")
     void successfulDeleteUserTest() {
-        given()
-                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
-                .contentType(JSON)
-                .log().uri()
+        given(requestSpec)
 
                 .when()
                 .delete(USERS_END_POINT + validUserId)
 
                 .then()
-                .log().status()
-                .statusCode(HTTP_NO_CONTENT);
+                .spec(deleteResponseSpec);
     }
 
     @Test
     @DisplayName("Неуспешная регистрация: отсутствует пароль")
     void errorMissingPasswordRegisterTest() {
-        String userCredentials = "{\"email\": \"sydney@fife\"}";
+        RegisterBodyModel userCredentials = new RegisterBodyModel();
+        userCredentials.setEmail("eve.holt@reqres.in");
 
-        given()
-                .header(FREE_API_KEY_NAME, FREE_API_KEY_VALUE)
-                .body(userCredentials)
-                .contentType(JSON)
-                .log().uri()
+        RegisterErrorResponseModel response = step("Make unsuccessful register request", () ->
+                given(requestSpec)
+                        .body(userCredentials)
 
-                .when()
-                .post(REGISTER_END_POINT)
+                        .when()
+                        .post(REGISTER_END_POINT)
 
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(HTTP_BAD_REQUEST)
-                .body("error", is("Missing password"));
+                        .then()
+                        .spec(error400ResponseSpec)
+                        .extract().as(RegisterErrorResponseModel.class));
+
+        step("Check unsuccessful response", () ->
+                assertEquals("Missing password", response.getError()));
     }
-
 }

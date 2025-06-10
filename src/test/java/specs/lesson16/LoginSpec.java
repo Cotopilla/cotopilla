@@ -1,4 +1,4 @@
-package specs;
+package specs.lesson16;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -16,6 +16,7 @@ public class LoginSpec {
                 .header("x-api-key", "reqres-free-v1");
 
     public static RequestSpecification loginRequestSpec = with()
+            .spec(authRequestSpec)
             .filter(withCustomTemplates())
             .log().uri()
             .log().body()

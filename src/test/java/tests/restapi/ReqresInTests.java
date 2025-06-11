@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.is;
+import static java.net.HttpURLConnection.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.ReqresInSpecs.*;
 
@@ -22,21 +22,27 @@ public class ReqresInTests extends TestBase {
     @Test
     @DisplayName("Запрос данных по несуществующему пользователю")
     void singleUserNotFound404Test() {
-        step("Make request for not exist user", () ->
+        String response = step("Make request for not existing user", () ->
                 given(requestSpec)
 
                         .when()
                         .get(USERS_END_POINT + notValidUserId)
 
                         .then()
-                        .spec(error404ResponseSpec)
-                        .body(is("{}"))); //todo вынести в модель?
+                        .spec(responseSpec)
+                        .statusCode(HTTP_NOT_FOUND)
+                        .extract().asString());
+
+        step("Check response", () -> {
+            assertEquals("{}", response, "Тело ответа не пустое");
+        });
     }
 
     @Test
     @DisplayName("Изменение данных пользователя (через patch)")
     void successfulPatchUserJobTest() {
         CreateAndUpdateBodyModel updateUserDataBody = new CreateAndUpdateBodyModel();
+        //наполнение переменных объекта через сеттер, автогенерация с аннотацией lombok @Data
         updateUserDataBody.setName("morpheus");
         updateUserDataBody.setJob("zion resident");
 
@@ -48,21 +54,22 @@ public class ReqresInTests extends TestBase {
                         .patch(USERS_END_POINT + validUserId)
 
                         .then()
-                        .spec(updateResponseSpec)
+                        .spec(responseSpec)
+                        .statusCode(HTTP_OK)
                         .extract().as(UpdateResponseModel.class));
 
         step("Check response", () -> {
-            response.checkName("morpheus");     //проверка через метод модели
-            response.checkJob("zion resident");
+            assertEquals("morpheus", response.getName(), "Поле name не совпадает");
+            assertEquals("zion resident", response.getJob(), "Поле job не совпадает");
         });
     }
 
     @Test
     @DisplayName("Изменение данных пользователя (через put)")
     void successfulUpdateUserJobTest() {
-        CreateAndUpdateBodyModel updateUserDataBody = new CreateAndUpdateBodyModel();
-        updateUserDataBody.setName("morpheus");
-        updateUserDataBody.setJob("zion resident");
+        //наполнение переменных объекта через конструктор, аннотация @AllArgsConstructor
+        CreateAndUpdateBodyModel updateUserDataBody = new CreateAndUpdateBodyModel
+                ("morpheus", "zion resident");  //
 
         UpdateResponseModel response = step("Make update (PUT) request", () ->
                 given(requestSpec)
@@ -72,12 +79,13 @@ public class ReqresInTests extends TestBase {
                         .put(USERS_END_POINT + validUserId)
 
                         .then()
-                        .spec(updateResponseSpec)
+                        .spec(responseSpec)
+                        .statusCode(HTTP_OK)
                         .extract().as(UpdateResponseModel.class));
 
         step("Check response", () -> {
-            assertEquals("morpheus", response.getName());    //проверка через ассерт
-            assertEquals("zion resident", response.getJob());
+            assertEquals("morpheus", response.getName(), "Поле name не совпадает");
+            assertEquals("zion resident", response.getJob(), "Поле job не совпадает");
         });
     }
 
@@ -96,7 +104,8 @@ public class ReqresInTests extends TestBase {
                         .post(USERS_END_POINT)
 
                         .then()
-                        .spec(createResponseSpec)
+                        .spec(responseSpec)
+                        .statusCode(HTTP_CREATED)
                         .extract().as(CreateResponseModel.class));
 
         step("Check response", () -> {
@@ -109,13 +118,14 @@ public class ReqresInTests extends TestBase {
     @DisplayName("Удаление пользователя")
     void successfulDeleteUserTest() {
         step("Delete user", () ->
-        given(requestSpec)
+                given(requestSpec)
 
-                .when()
-                .delete(USERS_END_POINT + validUserId)
+                        .when()
+                        .delete(USERS_END_POINT + validUserId)
 
-                .then()
-                .spec(deleteResponseSpec));
+                        .then()
+                        .spec(responseSpec)
+                        .statusCode(HTTP_NO_CONTENT));
     }
 
     @Test
@@ -132,7 +142,8 @@ public class ReqresInTests extends TestBase {
                         .post(REGISTER_END_POINT)
 
                         .then()
-                        .spec(error400ResponseSpec)
+                        .spec(responseSpec)
+                        .statusCode(HTTP_BAD_REQUEST)
                         .extract().as(RegisterErrorResponseModel.class));
 
         step("Check unsuccessful response", () ->

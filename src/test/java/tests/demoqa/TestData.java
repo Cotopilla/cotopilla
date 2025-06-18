@@ -20,8 +20,9 @@ public class TestData {
             filePath = getFilePath(),
             fileName = getFileName();
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    protected static String demoqaLogin = "EMalysh",
+            demoqaPassword = "Vbrd_100)%";
+
+
 }
 

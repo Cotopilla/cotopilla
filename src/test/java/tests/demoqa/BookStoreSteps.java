@@ -80,9 +80,6 @@ public class BookStoreSteps {
     @Step("Добавляем книгу в коллекцию профиля")
     public BookStoreSteps addBooksToProfileCollection
             (String firstIsbn, String userIdValue, String tokenValue) {
-//        DeleteOneBookBodyModel newBookData = new DeleteOneBookBodyModel();
-//        newBookData.setUserId(userIdValue);
-//        newBookData.setIsbn(isbnValue);
 
         IsbnModel[] isbnArrayValue = {
                 new IsbnModel(firstIsbn),

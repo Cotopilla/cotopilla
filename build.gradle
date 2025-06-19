@@ -73,6 +73,12 @@ task demoqa_property_test(type: Test) {
     }
 }
 
+task demoqa_bookstore_test(type: Test) {
+    useJUnitPlatform {
+        includeTags("bookstore")
+    }
+}
+
 task reqresin_test(type: Test) {
     useJUnitPlatform {
         includeTags("reqresin")

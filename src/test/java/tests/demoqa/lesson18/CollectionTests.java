@@ -50,7 +50,7 @@ public class CollectionTests extends TestBase {
                 .statusCode(204);
 
         String isbn = "9781449365035";
-        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"isbn\":\"%s\"}]}",
+        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"firstNewBook\":\"%s\"}]}",
                 authResponse.path("userId") , isbn);
 
         given()
@@ -95,7 +95,7 @@ public class CollectionTests extends TestBase {
                 .extract().response();
 
         String isbn = "9781449365035";
-        String deleteBookData = format("{\"userId\":\"%s\",\"isbn\":\"%s\"}",
+        String deleteBookData = format("{\"userId\":\"%s\",\"firstNewBook\":\"%s\"}",
                 authResponse.path("userId") , isbn);
 
         given()
@@ -112,7 +112,7 @@ public class CollectionTests extends TestBase {
                 .log().body()
                 .statusCode(204);
 
-        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"isbn\":\"%s\"}]}",
+        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"firstNewBook\":\"%s\"}]}",
                 authResponse.path("userId") , isbn);
 
         given()
@@ -157,7 +157,7 @@ public class CollectionTests extends TestBase {
                 .extract().response();
 
         String isbn = "9781449365035";
-        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"isbn\":\"%s\"}]}",
+        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"firstNewBook\":\"%s\"}]}",
                 authResponse.path("userId") , isbn);
 
         given()
@@ -181,7 +181,7 @@ public class CollectionTests extends TestBase {
     void negative401AddBookToCollectionTest() {
         String userId = "6b11b363-9eed-4a00-9469-51d95bed4ecf";
         String isbn = "9781449365035";
-        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"isbn\":\"%s\"}]}", userId , isbn);
+        String bookData = format("{\"userId\":\"%s\",\"collectionOfIsbns\":[{\"firstNewBook\":\"%s\"}]}", userId , isbn);
 
         given()
                 .log().uri()

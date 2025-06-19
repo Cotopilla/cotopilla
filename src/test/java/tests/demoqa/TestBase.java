@@ -19,13 +19,13 @@ public class TestBase {
     static void setBrowserParams() {
         Configuration.baseUrl = "https://demoqa.com";
         RestAssured.baseURI = "https://demoqa.com";
-        Configuration.browser = System.getProperty("browser");
-        Configuration.browserVersion = System.getProperty("version");
-        Configuration.browserSize = System.getProperty("resolution");
         Configuration.pageLoadStrategy = "eager";
+        Configuration.browser = System.getProperty("browser","chrome");
+        Configuration.browserVersion = System.getProperty("version","127.0");
+        Configuration.browserSize = System.getProperty("resolution","1920x1080");
         Configuration.remote = "https://"
-                + System.getProperty("selenoidCredentials")
-                + System.getProperty("selenoidUrl")
+                + System.getProperty("selenoidCredentials","user1:1234@")
+                + System.getProperty("selenoidUrl","selenoid.autotests.cloud")
                 + "/wd/hub";
 
         DesiredCapabilities capabilities = new DesiredCapabilities();

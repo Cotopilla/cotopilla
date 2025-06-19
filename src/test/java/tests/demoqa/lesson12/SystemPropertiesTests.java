@@ -1,8 +1,7 @@
 //from lesson 12
 
-package tests.demoqa;
+package tests.demoqa.lesson12;
 
-import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 

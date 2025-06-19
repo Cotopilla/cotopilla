@@ -18,8 +18,7 @@ public class DemoqaSpecs {
             .contentType(JSON);
 
     public static ResponseSpecification demoqaResponseSpec = new ResponseSpecBuilder()
-//            .log(STATUS)
-//            .log(BODY)
-            .log(ALL)
+            .log(STATUS)
+            .log(BODY)
             .build();
 }

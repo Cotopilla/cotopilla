@@ -3,6 +3,6 @@ package models.demoqa;
 import lombok.Data;
 
 @Data
-public class AddOrDeleteOneBookBodyModel {
+public class DeleteOneBookBodyModel {
     private String userId, isbn;
 }

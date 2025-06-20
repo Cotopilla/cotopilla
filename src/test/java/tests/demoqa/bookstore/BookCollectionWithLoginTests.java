@@ -14,8 +14,6 @@ import java.util.List;
 @Tag("bookstore")
 @Owner("Evgeniya Malysheva")
 public class BookCollectionWithLoginTests extends TestBase {
-    protected BookStoreSteps newBookStoreSession = new BookStoreSteps();
-
     private final String firstBookId = "9781449365035",
             firstBookName = "Speaking JavaScript",
             secondBookId = "9781491904244",

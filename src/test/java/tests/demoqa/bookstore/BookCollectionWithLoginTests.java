@@ -1,15 +1,19 @@
 package tests.demoqa.bookstore;
 
+import helpers.withlogin.WithLogin;
 import io.qameta.allure.Owner;
 import models.demoqa.IsbnModel;
 import models.demoqa.LoginResponseModel;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 @Tag("bookstore")
 @Owner("Evgeniya Malysheva")
-public class BookCollectionTests extends TestBase {
+public class BookCollectionWithLoginTests extends TestBase {
     protected BookStoreSteps newBookStoreSession = new BookStoreSteps();
 
     private final String firstBookId = "9781449365035",
@@ -21,33 +25,31 @@ public class BookCollectionTests extends TestBase {
     private final List<IsbnModel> listOfTwoBooks = List.of
             (new IsbnModel(firstBookId), new IsbnModel(secondBookId));
     private String userId,
-            token,
-            expires;
+            token;
 
     @BeforeEach
     public void authentificateAndSetParams() {
         LoginResponseModel authResponse = newBookStoreSession.demoqaAuth();
         userId = authResponse.getUserId();
         token = authResponse.getToken();
-        expires = authResponse.getExpires();
     }
 
     @Test
+    @WithLogin
     @DisplayName("Добавляем в коллекцию профиля одну книгу")
     void addBookToCollectionTest() {
         newBookStoreSession.deleteAllBooksFromProfileCollection(userId, token)
                 .addBooksToProfileCollection(listOfOneBook, userId, token)
-                .setDemoqaCookie(userId, token, expires)
                 .checkOneBookNameAndQuantityInProfileCollection(firstBookName);
     }
 
     @Test
+    @WithLogin
     @DisplayName("Добавляем в коллекцию профиля две книги, одну удаляем")
     void addTwoBooksToCollection_thenDeleteOneBook_Test() {
         newBookStoreSession.deleteAllBooksFromProfileCollection(userId, token)
                 .addBooksToProfileCollection(listOfTwoBooks, userId, token)
                 .deleteOneBookFromProfileCollection(firstBookId, userId, token)
-                .setDemoqaCookie(userId, token, expires)
                 .checkOneBookNameAndQuantityInProfileCollection(secondBookName);
     }
 }

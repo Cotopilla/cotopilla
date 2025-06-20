@@ -2,8 +2,10 @@ package models.demoqa;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AddListOfBooksModel {
     private String userId;
-    private IsbnModel[] collectionOfIsbns;
+    private List<IsbnModel> collectionOfIsbns;
 }

@@ -4,8 +4,9 @@ import io.qameta.allure.Step;
 import models.demoqa.*;
 import org.openqa.selenium.Cookie;
 
+import java.util.List;
+
 import static com.codeborne.selenide.CollectionCondition.size;
-import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -35,7 +36,7 @@ public class BookStoreSteps {
 
     @Step("Подменяем cookie на сайте")
     public BookStoreSteps setDemoqaCookie
-            (String userIdValue, String tokenValue, String expiresValue ) {
+            (String userIdValue, String tokenValue, String expiresValue) {
         open("/favicon.ico");
         getWebDriver().manage().addCookie(new Cookie("userID", userIdValue));
         getWebDriver().manage().addCookie(new Cookie("expires", tokenValue));
@@ -80,36 +81,11 @@ public class BookStoreSteps {
 
     @Step("Добавляем книгу в коллекцию профиля")
     public BookStoreSteps addBooksToProfileCollection
-            (String firstIsbn, String userIdValue, String tokenValue) {
-        IsbnModel[] isbnArrayValue = {
-                new IsbnModel(firstIsbn),
-           };
+            (List<IsbnModel> listOfIsbn, String userIdValue, String tokenValue) {
+
         AddListOfBooksModel newBookData = new AddListOfBooksModel();
         newBookData.setUserId(userIdValue);
-        newBookData.setCollectionOfIsbns(isbnArrayValue);
-
-        given(demoqaRequestSpec)
-                .header("Authorization", "Bearer " + tokenValue)
-                .body(newBookData)
-                .when()
-                .post(BOOKS_END_POINT)
-                .then()
-                .spec(demoqaResponseSpec)
-                .statusCode(HTTP_CREATED);
-
-        return this;
-    }
-
-    @Step("Добавляем пару разных книг в коллекцию профиля")
-    public BookStoreSteps addBooksToProfileCollection
-            (String firstIsbn, String secondIsbn, String userIdValue, String tokenValue) {
-        IsbnModel[] isbnArrayValue = {
-                new IsbnModel(firstIsbn),
-                new IsbnModel(secondIsbn)
-        };
-        AddListOfBooksModel newBookData = new AddListOfBooksModel();
-        newBookData.setUserId(userIdValue);
-        newBookData.setCollectionOfIsbns(isbnArrayValue);
+        newBookData.setCollectionOfIsbns(listOfIsbn);
 
         given(demoqaRequestSpec)
                 .header("Authorization", "Bearer " + tokenValue)
@@ -124,10 +100,9 @@ public class BookStoreSteps {
     }
 
     @Step("Проверяем, отображается ли книга")
-    public void checkBookNameInProfileCollection(String bookName) {
+    public void checkOneBookNameAndQuantityInProfileCollection(String bookName) {
         open("/profile");
         $(".rt-td a").shouldHave(text(bookName));
+        $$(".rt-td a").shouldHave(size(1));
     }
-
-
 }

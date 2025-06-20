@@ -40,8 +40,8 @@ public class BookStoreSteps {
             (String userIdValue, String tokenValue, String expiresValue) {
         open("/favicon.ico");
         getWebDriver().manage().addCookie(new Cookie("userID", userIdValue));
-        getWebDriver().manage().addCookie(new Cookie("expires", tokenValue));
-        getWebDriver().manage().addCookie(new Cookie("token", expiresValue));
+        getWebDriver().manage().addCookie(new Cookie("expires", expiresValue));
+        getWebDriver().manage().addCookie(new Cookie("token", tokenValue));
 
         return this;
     }

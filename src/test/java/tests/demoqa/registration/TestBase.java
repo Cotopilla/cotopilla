@@ -1,4 +1,4 @@
-package tests.demoqa;
+package tests.demoqa.registration;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+
 public class TestBase {
 
     @BeforeAll

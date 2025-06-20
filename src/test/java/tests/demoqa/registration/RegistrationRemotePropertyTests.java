@@ -1,12 +1,57 @@
-package tests.demoqa;
+package tests.demoqa.registration;
 
-import org.junit.jupiter.api.Test;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import helpers.Attach;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import pages.RegistrationPage;
 
-public class RegistrationWithPageObjectsTests extends TestBase {
+import java.util.Map;
+
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+
+@Tag("property")
+public class RegistrationRemotePropertyTests {
 
     protected RegistrationPage registrationPage = new RegistrationPage();
     protected TestData testData = new TestData();
+
+    @BeforeAll
+    static void setBrowserParams() {
+        Configuration.baseUrl = "https://demoqa.com";
+        Configuration.browser = System.getProperty("browser");
+        Configuration.browserVersion = System.getProperty("version");
+        Configuration.browserSize = System.getProperty("resolution");
+        Configuration.pageLoadStrategy = "eager";
+        Configuration.remote = "https://"
+                + System.getProperty("selenoidCredentials")
+                + System.getProperty("selenoidUrl")
+                + "/wd/hub";
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("selenoid:options", Map.<String, Object>of(
+                "enableVNC", true,
+                "enableVideo", true
+        ));
+        Configuration.browserCapabilities = capabilities;
+
+     }
+
+    @BeforeEach
+    void addAllureSelenideListener(){
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
+    }
+
+    @AfterEach
+    void getAttachAndCloseDriver() {
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
+        Attach.browserConsoleLogs();
+        Attach.addVideo();
+        closeWebDriver();
+    }
 
     @Test
     void successfulAllFieldsRegistrationTest() {

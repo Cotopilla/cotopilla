@@ -1,10 +1,11 @@
-package tests.demoqa;
+package tests.demoqa.bookstore;
 
 import io.qameta.allure.Step;
 import models.demoqa.*;
 import org.openqa.selenium.Cookie;
 
 import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.CollectionCondition.texts;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
@@ -12,7 +13,7 @@ import static io.restassured.RestAssured.given;
 import static java.net.HttpURLConnection.*;
 import static specs.DemoqaSpecs.demoqaRequestSpec;
 import static specs.DemoqaSpecs.demoqaResponseSpec;
-import static tests.demoqa.TestData.*;
+import static tests.demoqa.bookstore.TestData.*;
 
 public class BookStoreSteps {
 
@@ -80,7 +81,6 @@ public class BookStoreSteps {
     @Step("Добавляем книгу в коллекцию профиля")
     public BookStoreSteps addBooksToProfileCollection
             (String firstIsbn, String userIdValue, String tokenValue) {
-
         IsbnModel[] isbnArrayValue = {
                 new IsbnModel(firstIsbn),
            };
@@ -126,8 +126,7 @@ public class BookStoreSteps {
     @Step("Проверяем, отображается ли книга")
     public void checkBookNameInProfileCollection(String bookName) {
         open("/profile");
-        $(".ReactTable").shouldHave(text(bookName));
-        $$(".ReactTable").shouldHave(size(1));
+        $(".rt-td a").shouldHave(text(bookName));
     }
 
 

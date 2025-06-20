@@ -1,4 +1,4 @@
-package tests.demoqa;
+package tests.demoqa.registration;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;

@@ -8,6 +8,7 @@ import org.openqa.selenium.Cookie;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static io.qameta.allure.Allure.step;
 
 public class LoginExtension implements BeforeEachCallback {
 
@@ -19,7 +20,8 @@ public class LoginExtension implements BeforeEachCallback {
         String tokenValue = response.getToken();
         String expiresValue = response.getExpires();
 
-        open("/images/Toolsqa.jpg");
+        step("Авторизация @WithLogin", () ->
+        open("/images/Toolsqa.jpg"));
         getWebDriver().manage().addCookie(new Cookie("userID", userIdValue));
         getWebDriver().manage().addCookie(new Cookie("expires", expiresValue));
         getWebDriver().manage().addCookie(new Cookie("token", tokenValue));
